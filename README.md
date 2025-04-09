@@ -15,21 +15,13 @@ A tool for automating other tools and performing recon processes as well as test
 - The possibility of installing only one of the required sections in the menu.
 - Creating a dedicated menu and icon design for all tools.
 
-### Install Linux Elite
+### Install Bash Hunter
 ```
 curl -s https://raw.githubusercontent.com/unk9vvn/bash-hunter/main/bash-hunter.sh | sudo bash
 ```
 ### Run Script
 ```
 sudo bash-hunter
-```
-### Install Windows Elite
-```
-...
-```
-### Run Script
-```
-...
 ```
 
 [![Website](https://img.shields.io/badge/Website-000000?style=flat&logo=google-chrome&logoColor=white)](https://unk9vvn.com)
