@@ -5,7 +5,8 @@ source ./lib/ports.sh
 source ./lib/directories.sh
 source ./lib/endpoints.sh
 source ./lib/parameters.sh
-ver="1.0"
+VERSION="1.0"
+GITHUB_TOKEN="ghp_xxxYourTokenHere"
 
 # Define color codes as variables
 GREEN="\033[32m"
@@ -123,26 +124,26 @@ install()
 
     # install bash-hunter
     if [ ! -d "/usr/share/bash-hunter" ]; then
-        name="bash-hunter"
-        git clone https://a9v8i:$TOKEN@github.com/unk9vvn/bash-hunter /usr/share/$name
-        chmod 755 /usr/share/$name/*
-        cat > /usr/bin/$name << EOF
+        NAME="bash-hunter"
+        git clone https://a9v8i:$TOKEN@github.com/unk9vvn/bash-hunter /usr/share/$NAME
+        chmod 755 /usr/share/$NAME/*
+        cat > /usr/bin/$NAME << EOF
 #!/bin/bash
-cd /usr/share/$name;bash $name.sh "\$@"
+cd /usr/share/$NAME;bash $NAME.sh "\$@"
 EOF
-        chmod +x /usr/bin/$name
-        printf "$GREEN"  "[*] Successfully Installed $name"
-    elif [ "$(curl -s https://a9v8i:$TOKEN@raw.githubusercontent.com/unk9vvn/bash-hunter/main/version)" != $ver ]; then
-        name="bash-hunter"
-        git clone https://a9v8i:$TOKEN@github.com/unk9vvn/bash-hunter /usr/share/$name
-        chmod 755 /usr/share/$name/*
-        cat > /usr/bin/$name << EOF
+        chmod +x /usr/bin/$NAME
+        printf "$GREEN"  "[*] Successfully Installed $NAME"
+    elif [ "$(curl -s https://a9v8i:$TOKEN@raw.githubusercontent.com/unk9vvn/bash-hunter/main/version)" != $VERSION ]; then
+        NAME="bash-hunter"
+        git clone https://a9v8i:$TOKEN@github.com/unk9vvn/bash-hunter /usr/share/$NAME
+        chmod 755 /usr/share/$NAME/*
+        cat > /usr/bin/$NAME << EOF
 #!/bin/bash
-cd /usr/share/$name;bash $name.sh "\$@"
+cd /usr/share/$NAME;bash $NAME.sh "\$@"
 EOF
-        chmod +x /usr/bin/$name
-        printf "$GREEN"  "[*] Successfully Updated $name"
-        bash /usr/share/$name/$name.sh
+        chmod +x /usr/bin/$NAME
+        printf "$GREEN"  "[*] Successfully Updated $NAME"
+        bash /usr/share/$NAME/$NAME.sh
     fi
 }
 
