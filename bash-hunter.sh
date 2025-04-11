@@ -5,7 +5,7 @@ source ./lib/ports.sh
 source ./lib/directories.sh
 source ./lib/endpoints.sh
 source ./lib/parameters.sh
-VERSION="1.0"
+VER="1.0"
 
 # Define color codes as variables
 GREEN="\033[32m"
@@ -132,7 +132,7 @@ cd /usr/share/$NAME;bash $NAME.sh "\$@"
 EOF
         chmod +x /usr/bin/$NAME
         printf "$GREEN"  "[*] Successfully Installed $NAME"
-    elif [ "$(curl -s https://a9v8i:$TOKEN@raw.githubusercontent.com/unk9vvn/bash-hunter/main/version)" != $VERSION ]; then
+    elif [ "$(curl -s https://a9v8i:$TOKEN@raw.githubusercontent.com/unk9vvn/bash-hunter/main/version)" != $VER ]; then
         NAME="bash-hunter"
         git clone https://a9v8i:$TOKEN@github.com/unk9vvn/bash-hunter /usr/share/$NAME
         chmod 755 /usr/share/$NAME/*
