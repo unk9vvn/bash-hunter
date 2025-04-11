@@ -161,7 +161,7 @@ install()
         fi
     done
 
-    # install bash-hunter
+    # install & update bash-hunter
     if [ ! -d "/usr/share/bash-hunter" ]; then
         NAME="bash-hunter"
         git clone https://a9v8i:$TOKEN@github.com/unk9vvn/bash-hunter /usr/share/$NAME
