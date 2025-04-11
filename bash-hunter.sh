@@ -5,8 +5,11 @@ source ./lib/ports.sh
 source ./lib/directories.sh
 source ./lib/endpoints.sh
 source ./lib/parameters.sh
+# Load the .env file
+set -o allexport
+source ./.env
+set +o allexport
 VERSION="1.0"
-GITHUB_TOKEN="ghp_xxxYourTokenHere"
 
 # Define color codes as variables
 GREEN="\033[32m"
