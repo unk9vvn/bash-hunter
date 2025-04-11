@@ -42,24 +42,24 @@ install()
     # pip install
     pip3 install --break-system-packages arjun semgrep 
 
-	# install ngrok
-	if [ ! -f "/usr/local/bin/ngrok" ]; then
-		name="ngrok"
-		wget https://bin.equinox.io/c/bNyj1mQVY4c/ngrok-v3-stable-linux-amd64.tgz -O /tmp/$name.tgz
-		tar -xvzf /tmp/$name.tgz -C /usr/local/bin;rm -f /tmp/$name.tgz
-		chmod +x /usr/local/bin/ngrok
-	fi
+    # install ngrok
+    if [ ! -f "/usr/local/bin/ngrok" ]; then
+        name="ngrok"
+        wget https://bin.equinox.io/c/bNyj1mQVY4c/ngrok-v3-stable-linux-amd64.tgz -O /tmp/$name.tgz
+        tar -xvzf /tmp/$name.tgz -C /usr/local/bin;rm -f /tmp/$name.tgz
+        chmod +x /usr/local/bin/ngrok
+    fi
 
-	# install x8
-	if [ ! -d "/usr/share/x8" ]; then
-		name="x8"
-		mkdir -p /usr/share/x8
-		wget https://github.com/Sh1Yo/x8/releases/latest/download/x86_64-linux-x8.gz -O /tmp/$name.gz
-		gunzip -c /tmp/$name.gz > /usr/share/$name/$name;rm -f /tmp/$name.gz
-		chmod 755 /usr/share/$name/*
-		ln -fs /usr/share/$name/x8 /usr/bin/$name
-		chmod +x /usr/bin/$name
-	fi
+    # install x8
+    if [ ! -d "/usr/share/x8" ]; then
+        name="x8"
+        mkdir -p /usr/share/x8
+        wget https://github.com/Sh1Yo/x8/releases/latest/download/x86_64-linux-x8.gz -O /tmp/$name.gz
+        gunzip -c /tmp/$name.gz > /usr/share/$name/$name;rm -f /tmp/$name.gz
+        chmod 755 /usr/share/$name/*
+        ln -fs /usr/share/$name/x8 /usr/bin/$name
+        chmod +x /usr/bin/$name
+    fi
 
     # List of tools to check and install if necessary
     tools=("naabu" "httpx" "favirecon" "waybackurls" "katana" "qsreplace" "cvemap" "mapcidr" "gf" "anew" "gau")
@@ -121,29 +121,29 @@ install()
         fi
     done
 
-	# install bash-hunter
-	if [ ! -d "/usr/share/bash-hunter" ]; then
-		name="bash-hunter"
-		git clone https://a9v8i:$TOKEN@github.com/unk9vvn/bash-hunter /usr/share/$name
-		chmod 755 /usr/share/$name/*
-		cat > /usr/bin/$name << EOF
+    # install bash-hunter
+    if [ ! -d "/usr/share/bash-hunter" ]; then
+        name="bash-hunter"
+        git clone https://a9v8i:$TOKEN@github.com/unk9vvn/bash-hunter /usr/share/$name
+        chmod 755 /usr/share/$name/*
+        cat > /usr/bin/$name << EOF
 #!/bin/bash
 cd /usr/share/$name;bash $name.sh "\$@"
 EOF
-		chmod +x /usr/bin/$name
-	    printf "$GREEN"  "[*] Successfully Installed $name"
+        chmod +x /usr/bin/$name
+        printf "$GREEN"  "[*] Successfully Installed $name"
     elif [ "$(curl -s https://a9v8i:$TOKEN@raw.githubusercontent.com/unk9vvn/bash-hunter/main/version)" != $ver ]; then
-		name="bash-hunter"
-		git clone https://a9v8i:$TOKEN@github.com/unk9vvn/bash-hunter /usr/share/$name
-		chmod 755 /usr/share/$name/*
-		cat > /usr/bin/$name << EOF
+        name="bash-hunter"
+        git clone https://a9v8i:$TOKEN@github.com/unk9vvn/bash-hunter /usr/share/$name
+        chmod 755 /usr/share/$name/*
+        cat > /usr/bin/$name << EOF
 #!/bin/bash
 cd /usr/share/$name;bash $name.sh "\$@"
 EOF
-		chmod +x /usr/bin/$name
-	    printf "$GREEN"  "[*] Successfully Updated $name"
-		bash /usr/share/$name/$name.sh
-	fi
+        chmod +x /usr/bin/$name
+        printf "$GREEN"  "[*] Successfully Updated $name"
+        bash /usr/share/$name/$name.sh
+    fi
 }
 
 # Main process
@@ -160,9 +160,6 @@ process()
     directories "$DOMAIN" "$TMP"
     endpoints "$DOMAIN" "$TMP"
     parameters "$DOMAIN" "$TMP"
-    
-    # Clean up ngrok and beef process
-    pkill -f 'ngrok|ruby'
 }
 
 # main executions
@@ -193,6 +190,5 @@ main()
         process "$1"
     fi
 }
-
 # Execute the script
 main "$@"
