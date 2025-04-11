@@ -68,7 +68,7 @@ install()
     apt update
     apt install -qy curl wget jq \
         golang-go \
-        hakrawler wpscan sqlmap ffuf metasploit-framework beef-xss wpscan joomscan nuclei 
+        hakrawler wpscan sqlmap ffuf metasploit-framework beef-xss wpscan joomscan nuclei seclists 
 
     # pip install
     pip3 install --break-system-packages arjun semgrep 
