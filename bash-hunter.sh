@@ -61,15 +61,6 @@ logo()
     printf "\n\n"
 }
 
-# Create templates
-temp()
-{
-    local DOMAIN="$1"
-    TMP="/tmp/$DOMAIN"
-    mkdir -p "$TMP"
-    echo "8.8.8.8" > $TMP/resolvers.txt
-}
-
 # Install tools
 install()
 {
@@ -184,6 +175,15 @@ EOF
         printf "$GREEN"  "[*] Successfully Updated $NAME"
         bash /usr/share/$NAME/$NAME.sh
     fi
+}
+
+# Create templates
+temp()
+{
+    local DOMAIN="$1"
+    TMP="/tmp/$DOMAIN"
+    mkdir -p "$TMP"
+    echo "8.8.8.8" > $TMP/resolvers.txt
 }
 
 # Main process
