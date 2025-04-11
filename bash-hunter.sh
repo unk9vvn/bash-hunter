@@ -5,10 +5,6 @@ source ./lib/ports.sh
 source ./lib/directories.sh
 source ./lib/endpoints.sh
 source ./lib/parameters.sh
-# Load the .env file
-set -o allexport
-source ./.env
-set +o allexport
 VERSION="1.0"
 
 # Define color codes as variables
