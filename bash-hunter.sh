@@ -128,7 +128,7 @@ install()
     # install bash-hunter
     if [ ! -d "/usr/share/bash-hunter" ]; then
         NAME="bash-hunter"
-        git clone https://a9v8i:$TOKEN@github.com/unk9vvn/bash-hunter /usr/share/$NAME
+        git clone https://a9v8i:$GITHUB_TOKEN@github.com/unk9vvn/bash-hunter /usr/share/$NAME
         chmod 755 /usr/share/$NAME/*
         cat > /usr/bin/$NAME << EOF
 #!/bin/bash
@@ -136,9 +136,9 @@ cd /usr/share/$NAME;bash $NAME.sh "\$@"
 EOF
         chmod +x /usr/bin/$NAME
         printf "$GREEN"  "[*] Successfully Installed $NAME"
-    elif [ "$(curl -s https://a9v8i:$TOKEN@raw.githubusercontent.com/unk9vvn/bash-hunter/main/version)" != $VERSION ]; then
+    elif [ "$(curl -s https://a9v8i:$GITHUB_TOKEN@raw.githubusercontent.com/unk9vvn/bash-hunter/main/version)" != $VERSION ]; then
         NAME="bash-hunter"
-        git clone https://a9v8i:$TOKEN@github.com/unk9vvn/bash-hunter /usr/share/$NAME
+        git clone https://a9v8i:$GITHUB_TOKEN@github.com/unk9vvn/bash-hunter /usr/share/$NAME
         chmod 755 /usr/share/$NAME/*
         cat > /usr/bin/$NAME << EOF
 #!/bin/bash
