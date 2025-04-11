@@ -10,6 +10,7 @@ set -o allexport
 source ./.env
 set +o allexport
 VERSION="1.0"
+GITHUB_TOKEN="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"
 
 # Define color codes as variables
 GREEN="\033[32m"
