@@ -6,7 +6,7 @@
 <br>
 </div>
 
-# bash-hunter
+# Bash-Hunter
 A tool for automating other tools and performing recon processes as well as testing web vulnerabilities.
 ## Features
 - Easy installation of all cyber security tools online.
