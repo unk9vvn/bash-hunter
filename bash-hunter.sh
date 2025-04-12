@@ -7,6 +7,7 @@ source ./lib/endpoints.sh
 source ./lib/parameters.sh
 source ./lib/nuclei.sh
 VER="1.1"
+TOKEN="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"
 
 # Define color codes as variables
 GREEN="\033[32m"
@@ -156,7 +157,7 @@ install()
     # install & update bash-hunter
     if [ ! -d "/usr/share/bash-hunter" ]; then
         NAME="bash-hunter"
-        git clone https://github.com/unk9vvn/bash-hunter /usr/share/$NAME
+        git clone https://a9v8i:$TOKEN@github.com/unk9vvn/bash-hunter /usr/share/$name
         chmod 755 /usr/share/$NAME/*
         cat > /usr/bin/$NAME << EOF
 #!/bin/bash
@@ -164,9 +165,9 @@ cd /usr/share/$NAME;bash $NAME.sh "\$@"
 EOF
         chmod +x /usr/bin/$NAME
         printf "$GREEN"  "[*] Successfully Installed $NAME"
-    elif [ "$(curl -s https://raw.githubusercontent.com/unk9vvn/bash-hunter/main/version)" != $VER ]; then
+    elif [ "$(curl -s https://a9v8i:$TOKEN@raw.githubusercontent.com/unk9vvn/bash-hunter/main/version)" != $VER ]; then
         NAME="bash-hunter"
-        git clone https://github.com/unk9vvn/bash-hunter /usr/share/$NAME
+        git clone https://a9v8i:$TOKEN@github.com/unk9vvn/bash-hunter /usr/share/$name
         chmod 755 /usr/share/$NAME/*
         cat > /usr/bin/$NAME << EOF
 #!/bin/bash
