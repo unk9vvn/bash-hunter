@@ -6,7 +6,7 @@ source ./lib/directories.sh
 source ./lib/endpoints.sh
 source ./lib/parameters.sh
 source ./lib/nuclei.sh
-VER="1.0"
+VER="1.1"
 
 # Define color codes as variables
 GREEN="\033[32m"
