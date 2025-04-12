@@ -1,10 +1,11 @@
 #!/bin/bash
-source ./lib/ngrok.sh
+source ./lib/init.sh
 source ./lib/subdomains.sh
 source ./lib/ports.sh
 source ./lib/directories.sh
 source ./lib/endpoints.sh
 source ./lib/parameters.sh
+source ./lib/nuclei.sh
 VER="1.0"
 
 # Define color codes as variables
@@ -194,12 +195,15 @@ process()
     temp "$DOMAIN"
     ngrok
 
-    # General Scans
+    # Recon
     subdomains "$DOMAIN" "$TMP"
     ports "$TMP"
     directories "$DOMAIN" "$TMP"
     endpoints "$DOMAIN" "$TMP"
     parameters "$DOMAIN" "$TMP"
+
+    # Scan
+    nuclei "$DOMAIN"
 }
 
 # main executions
