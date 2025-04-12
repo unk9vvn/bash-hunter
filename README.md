@@ -17,7 +17,7 @@ A tool for automating other tools and performing recon processes as well as test
 
 ### Install Bash Hunter
 ```
-GITHUB_TOKEN=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; \
+GITHUB_TOKEN=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; \
 curl -s https://a9v8i:$GITHUB_TOKEN@raw.githubusercontent.com/unk9vvn/bash-hunter/main/bash-hunter.sh -O ~/bash-hunter.sh; \
 sudo bash ~/bash-hunter.sh
 ```
