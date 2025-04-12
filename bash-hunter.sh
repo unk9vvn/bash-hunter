@@ -7,7 +7,7 @@ source ./lib/endpoints.sh
 source ./lib/parameters.sh
 source ./lib/nuclei.sh
 VER="1.1"
-TOKEN="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"
+TOKEN="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"
 
 # Define color codes as variables
 GREEN="\033[32m"
