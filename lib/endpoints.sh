@@ -29,13 +29,13 @@ endpoints()
     sort -u > /tmp/endpoint_one.txt
 
     # 2. gau (wayback, commoncrawl, etc)
-    gau $DOMAIN --o $TMP/endpoint_two.txt 2>/dev/null
+    gau $DOMAIN --o $TMP/endpoint_two.txt
 
     # 3. waybackurls
-    waybackurls $DOMAIN > $TMP/endpoint_three.txt 2>/dev/null
+    waybackurls $DOMAIN > $TMP/endpoint_three.txt
 
     # 4. hakrawler
-    echo $DOMAIN | hakrawler -subs -depth 2 -plain -insecure > $TMP/endpoint_four.txt 2>/dev/null
+    echo $DOMAIN | hakrawler -subs -depth 2 -plain -insecure > $TMP/endpoint_four.txt
 
     # Combine and clean
     cat $TMP/endpoint_one.txt $TMP/endpoint_two.txt $TMP/endpoint_three.txt $TMP/endpoint_four.txt | \
@@ -47,6 +47,6 @@ endpoints()
     grep -v '\.jpg$' | \
     grep -v '\.png$' | \
     grep -v '&amp' | \
-    sort -u | anew endpoints.txt > /dev/null
+    sort -u | anew $TMP/endpoints.txt
     echo -e "${RED}[-] Success FUZZ and SAVE ${TMP}/endpoints.txt ${RESET}"
 }
