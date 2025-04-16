@@ -17,7 +17,7 @@ A tool for automating other tools and performing recon processes as well as test
 
 ### Install Bash Hunter
 ```
-curl -s https://a9v8i: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@raw.githubusercontent.com/unk9vvn/unk9vvn.github.io/main/linux-elite.sh | sudo bash
+curl -s https://a9v8i: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@raw.githubusercontent.com/unk9vvn/bash-hunter/main/bash-hunter.sh | sudo bash
 ```
 ### Run Script
 ```
