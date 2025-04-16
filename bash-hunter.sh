@@ -9,7 +9,6 @@ RED='\033[31m'
 YELLOW='\033[33m'
 RESET='\033[0m'
 
-
 # Check if the script is being run as root
 if [ "$(id -u)" -ne 0 ]; then
     echo -e "${RED}[-] This script must be run as root (use sudo).${RESET}"
