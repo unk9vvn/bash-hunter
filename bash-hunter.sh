@@ -21,7 +21,7 @@ else
 	apt update;apt upgrade -qy;apt dist-upgrade -qy;apt autoremove -qy;apt autoclean
 
 	# install required packages
-	apt install -qy wget curl git net-tools gnupg apt-transport-https alacarte locate debsig-verify xmlstarlet 
+	apt install -qy wget curl git net-tools gnupg apt-transport-https 
 
 	# get current user and LAN IP address
 	USERS=$(cd /home;ls | awk '{print $1}')
