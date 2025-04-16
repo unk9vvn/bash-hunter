@@ -68,18 +68,18 @@ logo()
 # show help menu
 help()
 {
-    echo -e "$CYAN  ╔═════════════════════════════════════════════════════════════════════════════════════════════╗"
-    echo -e "$YELLOW║                                🚀 Bash Hunter CLI Options                                   ║"
-    echo -e "$CYAN  ╠═════════════════════════════════════════════════════════════════════════════════════════════╣"
-    echo -e "$GREEN ║  🟢 $WHITE-d <domain>         $CYAN→$WHITE 🔍 Scan a single domain                   $GREEN║"
-    echo -e "$GREEN ║  📂 $WHITE-D <file>           $CYAN→$WHITE 📜 Scan multiple domains from file        $GREEN║"
-    echo -e "$GREEN ║  🧪 $WHITE-P <project_path>   $CYAN→$WHITE 🔬 Run Semgrep on a local project folder  $GREEN║"
-    echo -e "$GREEN ║  🆘 $WHITE-h                  $CYAN→$WHITE 📖 Show this help menu                    $GREEN║"
-    echo -e "$CYAN  ╚═════════════════════════════════════════════════════════════════════════════════════════════╝"
-    echo -e "$MAGENTA📌 Example usage:"
-    echo -e "$WHITE   💻 sudo bash-hunter -d example.com"
-    echo -e "$WHITE   💻 sudo bash-hunter -D domains.txt"
-    echo -e "$WHITE   💻 sudo bash-hunter -P /web-project"
+    echo -e "$CYAN    ╔═════════════════════════════════════════════════════════════════════════════════════════════╗"
+    echo -e "$YELLOW  ║                                 🚀 Bash Hunter CLI Options                                   ║"
+    echo -e "$CYAN    ╠═════════════════════════════════════════════════════════════════════════════════════════════╣"
+    echo -e "$GREEN   ║  🟢 $WHITE-d <domain>         $CYAN→$WHITE 🔍 Scan a single domain                   $GREEN║"
+    echo -e "$GREEN   ║  📂 $WHITE-D <file>           $CYAN→$WHITE 📜 Scan multiple domains from file        $GREEN║"
+    echo -e "$GREEN   ║  🧪 $WHITE-P <project_path>   $CYAN→$WHITE 🔬 Run Semgrep on a local project folder  $GREEN║"
+    echo -e "$GREEN   ║  🆘 $WHITE-h                  $CYAN→$WHITE 📖 Show this help menu                    $GREEN║"
+    echo -e "$CYAN    ╚═════════════════════════════════════════════════════════════════════════════════════════════╝"
+    echo -e "$MAGENTA 📌 Example usage:"
+    echo -e "$WHITE    💻 sudo bash-hunter -d example.com"
+    echo -e "$WHITE    💻 sudo bash-hunter -D domains.txt"
+    echo -e "$WHITE    💻 sudo bash-hunter -P /web-project"
 }
 
 # Create templates
