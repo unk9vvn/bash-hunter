@@ -18,7 +18,7 @@ if [ "$(id -u)" -ne 0 ]; then
     exit 1
 else
     # install required packages
-    apt install -qy wget curl git net-tools gnupg apt-transport-https 
+    apt install -qy wget curl git net-tools gnupg apt-transport-https &>/dev/null &
 
     # get current user and LAN IP address
     USERS=$(cd /home;ls | awk '{print $1}')
