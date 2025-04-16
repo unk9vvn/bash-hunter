@@ -36,9 +36,7 @@ install()
 {
     # Install apt tools
     apt update
-    apt install -qy curl wget jq p7zip p7zip-full zipalign \
-        golang-go \
-        hakrawler wpscan sqlmap ffuf metasploit-framework beef-xss wpscan joomscan nuclei seclists 
+    apt install -qy hakrawler wpscan sqlmap ffuf metasploit-framework beef-xss wpscan joomscan nuclei seclists 
 
     # pip install
     pip3 install --break-system-packages arjun semgrep 
