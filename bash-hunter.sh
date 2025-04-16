@@ -10,11 +10,11 @@ VER="1.2"
 TOKEN="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"
 
 # Define color codes as variables
-GREEN="\033[32m"
-BLUE="\033[34m"
-RED="\033[31m"
-YELLOW="\033[33m"
-RESET="\033[0m"
+GREEN='\033[32m'
+BLUE='\033[34m'
+RED='\033[31m'
+YELLOW='\033[33m'
+RESET='\033[0m'
 
 # Get LAN and WAN IP addresses
 LAN=$(hostname -I | awk '{print $1}')
