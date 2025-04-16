@@ -3,13 +3,13 @@ VER='1.3'
 TOKEN='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'
 
 # Color Variables
-RED='\e[1;31m%s\e[0m\n'
-GREEN='\e[1;32m%s\e[0m\n'
-YELLOW='\e[1;33m%s\e[0m\n'
-BLUE='\e[1;34m%s\e[0m\n'
-MAGENTO='\e[1;35m%s\e[0m\n'
-CYAN='\e[1;36m%s\e[0m\n'
-WHITE='\e[1;37m%s\e[0m\n'
+RED='\033[1;31m'
+GREEN='\033[1;32m'
+YELLOW='\033[1;33m'
+BLUE='\033[1;34m'
+MAGENTA='\033[1;35m'
+CYAN='\033[1;36m'
+WHITE='\033[1;37m'
 RESET='\033[0m'
 
 # Check if the script is being run as root
