@@ -1,4 +1,36 @@
 #!/bin/bash
+
+# Check if the script is being run as root
+if [ "$(id -u)" -ne 0 ]; then
+    echo -e "${RED}[-] This script must be run as root (use sudo).${RESET}"
+    exit 1
+fi
+
+# Install & Update bash-hunter
+if [ ! -d "/usr/share/bash-hunter" ]; then
+    local NAME="bash-hunter"
+    git clone https://a9v8i:$TOKEN@github.com/unk9vvn/bash-hunter /usr/share/$NAME
+    chmod 755 /usr/share/$NAME/*;chmod 755 /usr/share/$NAME/lib
+    cat > /usr/bin/$NAME << EOF
+#!/bin/bash
+cd /usr/share/$NAME;bash $NAME.sh "\$@"
+EOF
+    chmod +x /usr/bin/$NAME
+    echo -e "${GREEN}[+] Successfully Installed: $NAME${RESET}"
+elif [ "$(curl -s https://a9v8i:$TOKEN@raw.githubusercontent.com/unk9vvn/bash-hunter/main/version)" != $VER ]; then
+    NAME="bash-hunter"
+    git clone https://a9v8i:$TOKEN@github.com/unk9vvn/bash-hunter /usr/share/$NAME
+    chmod 755 /usr/share/$NAME/*;chmod 755 /usr/share/$NAME/lib
+    cat > /usr/bin/$NAME << EOF
+#!/bin/bash
+cd /usr/share/$NAME;bash $NAME.sh "\$@"
+EOF
+    chmod +x /usr/bin/$NAME
+    echo -e "${GREEN}[+] Successfully Updated: $NAME${RESET}"
+    bash /usr/share/$NAME/$NAME.sh
+fi
+
+# Load libraries
 source ./lib/init.sh
 source ./lib/subdomains.sh
 source ./lib/ports.sh
@@ -110,36 +142,6 @@ process()
 # main executions
 main()
 {
-    # Check if the script is being run as root
-    if [ "$(id -u)" -ne 0 ]; then
-        echo -e "${RED}[-] This script must be run as root (use sudo).${RESET}"
-        exit 1
-    fi
-
-    # Install & Update bash-hunter
-    if [ ! -d "/usr/share/bash-hunter" ]; then
-        local NAME="bash-hunter"
-        git clone https://a9v8i:$TOKEN@github.com/unk9vvn/bash-hunter /usr/share/$NAME
-        chmod 755 /usr/share/$NAME/*;chmod 755 /usr/share/$NAME/lib
-        cat > /usr/bin/$NAME << EOF
-#!/bin/bash
-cd /usr/share/$NAME;bash $NAME.sh "\$@"
-EOF
-        chmod +x /usr/bin/$NAME
-        echo -e "${GREEN}[+] Successfully Installed: $NAME${RESET}"
-    elif [ "$(curl -s https://a9v8i:$TOKEN@raw.githubusercontent.com/unk9vvn/bash-hunter/main/version)" != $VER ]; then
-        NAME="bash-hunter"
-        git clone https://a9v8i:$TOKEN@github.com/unk9vvn/bash-hunter /usr/share/$NAME
-        chmod 755 /usr/share/$NAME/*;chmod 755 /usr/share/$NAME/lib
-        cat > /usr/bin/$NAME << EOF
-#!/bin/bash
-cd /usr/share/$NAME;bash $NAME.sh "\$@"
-EOF
-        chmod +x /usr/bin/$NAME
-        echo -e "${GREEN}[+] Successfully Updated: $NAME${RESET}"
-        bash /usr/share/$NAME/$NAME.sh
-    fi
-
     # Parse command line arguments
     while getopts ":d:D:P:h" opt; do
         case "${opt}" in
