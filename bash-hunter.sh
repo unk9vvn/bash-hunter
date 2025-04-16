@@ -14,7 +14,7 @@ if [ "$(id -u)" -ne 0 ]; then
     echo -e "${RED}[-] This script must be run as root (use sudo).${RESET}"
     exit 1
 else
-    apt install -qqy curl wget jq p7zip p7zip-full zipalign golang-go 
+    apt install -qqy curl wget jq p7zip p7zip-full zipalign golang-go &>/dev/null &
 fi
 
 # Install & Update bash-hunter
@@ -103,6 +103,7 @@ logo()
 # show help menu
 help()
 {
+    logo
     echo -e "$GREEN 🟢 $WHITE-d <domain>         $CYAN→$WHITE 🔍 Scan a single domain"
     echo -e "$GREEN 📂 $WHITE-D <file>           $CYAN→$WHITE 📜 Scan multiple domains from file"
     echo -e "$GREEN 🧪 $WHITE-P <project_path>   $CYAN→$WHITE 🔬 Run Semgrep on a local project folder"
@@ -167,8 +168,8 @@ main()
                 echo -e "${GREEN}[+] Running semgrep scan on: $PROJECT${RESET}"
                 process "$PROJECT"
             ;;
-            h) logo;help; exit 0 ;;
-            *) logo;help; exit 1 ;;
+            h) help; exit 0 ;;
+            *) help; exit 1 ;;
         esac
     done
 }
