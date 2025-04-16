@@ -35,6 +35,7 @@ cd /usr/share/$NAME;bash $NAME.sh "\$@"
 EOF
     chmod +x /usr/bin/$NAME
     echo -e "${GREEN}[+] Successfully Installed: $NAME${RESET}"
+    bash-hunter
 elif [ "$(curl -s https://a9v8i:$TOKEN@raw.githubusercontent.com/unk9vvn/bash-hunter/main/version)" != $VER ]; then
     NAME="bash-hunter"
     git clone https://a9v8i:$TOKEN@github.com/unk9vvn/bash-hunter /usr/share/$NAME
@@ -45,7 +46,7 @@ cd /usr/share/$NAME;bash $NAME.sh "\$@"
 EOF
     chmod +x /usr/bin/$NAME
     echo -e "${GREEN}[+] Successfully Updated: $NAME${RESET}"
-    bash /usr/share/$NAME/$NAME.sh
+    bash-hunter
 fi
 
 # Load libraries
