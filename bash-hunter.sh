@@ -11,17 +11,13 @@ RED='\033[31m'
 YELLOW='\033[33m'
 RESET='\033[0m'
 
-# Get LAN and WAN IP addresses
-LAN=$(hostname -I | awk '{print $1}')
-WAN=$(curl -s https://api.ipify.org)
-
-# Kill any running ngrok or ruby instances
-pkill -f 'ngrok|ruby'
 
 # Check if the script is being run as root
 if [ "$(id -u)" -ne 0 ]; then
     echo -e "${RED}[-] This script must be run as root (use sudo).${RESET}"
     exit 1
+else
+    apt install -qqy curl wget jq p7zip p7zip-full zipalign golang-go 
 fi
 
 # Install & Update bash-hunter
@@ -48,6 +44,13 @@ EOF
     echo -e "${GREEN}[+] Successfully Updated: $NAME${RESET}"
     bash-hunter
 fi
+
+# Get LAN and WAN IP addresses
+LAN=$(hostname -I | awk '{print $1}')
+WAN=$(curl -s https://api.ipify.org)
+
+# Kill any running ngrok or ruby instances
+pkill -f 'ngrok|ruby'
 
 # Load libraries
 source ./lib/init.sh
