@@ -6,7 +6,7 @@ source ./lib/directories.sh
 source ./lib/endpoints.sh
 source ./lib/parameters.sh
 source ./lib/nuclei.sh
-VER="1.1"
+VER="1.2"
 TOKEN="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"
 
 # Define color codes as variables
@@ -68,7 +68,7 @@ install()
 {
     # Install apt tools
     apt update
-    apt install -qy curl wget jq \
+    apt install -qy curl wget jq p7zip p7zip-full zipalign \
         golang-go \
         hakrawler wpscan sqlmap ffuf metasploit-framework beef-xss wpscan joomscan nuclei seclists 
 
@@ -81,6 +81,7 @@ install()
         wget https://bin.equinox.io/c/bNyj1mQVY4c/ngrok-v3-stable-linux-amd64.tgz -O /tmp/$name.tgz
         tar -xvzf /tmp/$name.tgz -C /usr/local/bin;rm -f /tmp/$name.tgz
         chmod +x /usr/local/bin/ngrok
+        printf "$GREEN"  "[*] Successfully Installed $name"
     fi
 
     # install x8
@@ -92,7 +93,18 @@ install()
         chmod 755 /usr/share/$name/*
         ln -fs /usr/share/$name/x8 /usr/bin/$name
         chmod +x /usr/bin/$name
+        printf "$GREEN"  "[*] Successfully Installed $name"
     fi
+
+	# install rustscan
+	if [ ! -f "/usr/bin/rustscan" ]; then
+		name="rustscan"
+		wget https://github.com/bee-san/RustScan/releases/download/2.4.1/rustscan.deb.zip -O /tmp/$name.zip
+        unzip /tmp/$name.zip -d /tmp;rm -f /tmp/$name.zip
+		chmod +x /tmp/rustscan_2.4.1-1_amd64.deb;dpkg -i /tmp/rustscan_2.4.1-1_amd64.deb
+        rm -f /tmp/rustscan_2.4.1-1_amd64.deb;rm -f /tmp/rustscan.tmp0-stripped
+		printf "$GREEN"  "[*] Successfully Installed $name"
+	fi
 
     # List of tools to check and install if necessary
     tools=("naabu" "httpx" "favirecon" "waybackurls" "katana" "qsreplace" "cvemap" "mapcidr" "gf" "anew" "gau")
