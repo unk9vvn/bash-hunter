@@ -6,8 +6,8 @@ source ./lib/directories.sh
 source ./lib/endpoints.sh
 source ./lib/parameters.sh
 source ./lib/nuclei.sh
-VER="1.2"
-TOKEN="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"
+VER='1.2'
+TOKEN='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'
 
 # Define color codes as variables
 GREEN='\033[32m'
