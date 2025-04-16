@@ -6,5 +6,10 @@ RESET='\033[0m'
 
 nuclei()
 {
-    nuclei -t /usr/share/bash-hunter/nuclei -tags all -v -u $DOMAIN
+    nuclei -t /usr/share/bash-hunter/template/nuclei -tags all -v -u $DOMAIN
+}
+
+semgrep()
+{
+    semgrep --config /usr/share/bash-hunter/template/semgrep $PROJECT
 }
