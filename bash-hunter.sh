@@ -17,18 +17,15 @@ if [ "$(id -u)" -ne 0 ]; then
     echo -e "${RED}[-] This script must be run as root (use sudo).${RESET}"
     exit 1
 else
-	# update & upgrade & clean up packages
-	apt update;apt upgrade -qy;apt dist-upgrade -qy;apt autoremove -qy;apt autoclean
+    # install required packages
+    apt install -qy wget curl git net-tools gnupg apt-transport-https 
 
-	# install required packages
-	apt install -qy wget curl git net-tools gnupg apt-transport-https 
+    # get current user and LAN IP address
+    USERS=$(cd /home;ls | awk '{print $1}')
+    LAN=$(hostname -I | awk '{print $1}')
 
-	# get current user and LAN IP address
-	USERS=$(cd /home;ls | awk '{print $1}')
-	LAN=$(hostname -I | awk '{print $1}')
-
-	# Kill any running ngrok or ruby instances
-	pkill -f 'ngrok|ruby'
+    # Kill any running ngrok or ruby instances
+    pkill -f 'ngrok|ruby'
 fi
 
 # Install & Update bash-hunter
