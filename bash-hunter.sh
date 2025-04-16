@@ -3,10 +3,13 @@ VER='1.3'
 TOKEN='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'
 
 # Color Variables
-GREEN='\033[32m'
-BLUE='\033[34m'
-RED='\033[31m'
-YELLOW='\033[33m'
+RED='\e[1;31m%s\e[0m\n'
+GREEN='\e[1;32m%s\e[0m\n'
+YELLOW='\e[1;33m%s\e[0m\n'
+BLUE='\e[1;34m%s\e[0m\n'
+MAGENTO='\e[1;35m%s\e[0m\n'
+CYAN='\e[1;36m%s\e[0m\n'
+WHITE='\e[1;37m%s\e[0m\n'
 RESET='\033[0m'
 
 # Check if the script is being run as root
@@ -14,7 +17,18 @@ if [ "$(id -u)" -ne 0 ]; then
     echo -e "${RED}[-] This script must be run as root (use sudo).${RESET}"
     exit 1
 else
-    apt install -qqy curl wget jq p7zip p7zip-full zipalign golang-go &>/dev/null &
+	# update & upgrade & clean up packages
+	apt update;apt upgrade -qy;apt dist-upgrade -qy;apt autoremove -qy;apt autoclean
+
+	# install required packages
+	apt install -qy wget curl git net-tools gnupg apt-transport-https alacarte locate debsig-verify xmlstarlet 
+
+	# get current user and LAN IP address
+	USERS=$(cd /home;ls | awk '{print $1}')
+	LAN=$(hostname -I | awk '{print $1}')
+
+	# Kill any running ngrok or ruby instances
+	pkill -f 'ngrok|ruby'
 fi
 
 # Install & Update bash-hunter
@@ -43,13 +57,6 @@ EOF
     echo -e "${GREEN}[+] sudo $NAME${RESET}"
     exit
 fi
-
-# Get LAN and WAN IP addresses
-LAN=$(hostname -I | awk '{print $1}')
-WAN=$(curl -s https://api.ipify.org)
-
-# Kill any running ngrok or ruby instances
-pkill -f 'ngrok|ruby'
 
 # Load libraries
 source ./lib/init.sh
