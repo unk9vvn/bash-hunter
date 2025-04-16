@@ -31,7 +31,8 @@ cd /usr/share/$NAME;bash $NAME.sh "\$@"
 EOF
     chmod +x /usr/bin/$NAME
     echo -e "${GREEN}[+] Successfully Installed: $NAME${RESET}"
-    bash-hunter
+    echo -e "${GREEN}[+] sudo $NAME${RESET}"
+    exit
 elif [ "$(curl -s https://a9v8i:$TOKEN@raw.githubusercontent.com/unk9vvn/bash-hunter/main/version)" != $VER ]; then
     NAME="bash-hunter"
     git clone https://a9v8i:$TOKEN@github.com/unk9vvn/bash-hunter /usr/share/$NAME
@@ -42,7 +43,8 @@ cd /usr/share/$NAME;bash $NAME.sh "\$@"
 EOF
     chmod +x /usr/bin/$NAME
     echo -e "${GREEN}[+] Successfully Updated: $NAME${RESET}"
-    bash-hunter
+    echo -e "${GREEN}[+] sudo $NAME${RESET}"
+    exit
 fi
 
 # Get LAN and WAN IP addresses
