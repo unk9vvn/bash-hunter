@@ -1,6 +1,4 @@
 #!/bin/bash
-
-# Global Variables
 VER='1.3'
 TOKEN='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'
 
