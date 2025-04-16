@@ -5,11 +5,13 @@ source ./lib/ports.sh
 source ./lib/directories.sh
 source ./lib/endpoints.sh
 source ./lib/parameters.sh
-source ./lib/nuclei.sh
+source ./lib/scans.sh
+
+# Global Variables
 VER='1.2'
 TOKEN='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'
 
-# Define color codes as variables
+# Color Variables
 GREEN='\033[32m'
 BLUE='\033[34m'
 RED='\033[31m'
@@ -63,132 +65,21 @@ logo()
     printf "\n\n"
 }
 
-# Install tools
-install()
+# show help menu
+help()
 {
-    # Install apt tools
-    apt update
-    apt install -qy curl wget jq p7zip p7zip-full zipalign \
-        golang-go \
-        hakrawler wpscan sqlmap ffuf metasploit-framework beef-xss wpscan joomscan nuclei seclists 
-
-    # pip install
-    pip3 install --break-system-packages arjun semgrep 
-
-    # install ngrok
-    if [ ! -f "/usr/local/bin/ngrok" ]; then
-        name="ngrok"
-        wget https://bin.equinox.io/c/bNyj1mQVY4c/ngrok-v3-stable-linux-amd64.tgz -O /tmp/$name.tgz
-        tar -xvzf /tmp/$name.tgz -C /usr/local/bin;rm -f /tmp/$name.tgz
-        chmod +x /usr/local/bin/ngrok
-        printf "$GREEN"  "[*] Successfully Installed $name"
-    fi
-
-    # install x8
-    if [ ! -d "/usr/share/x8" ]; then
-        name="x8"
-        mkdir -p /usr/share/x8
-        wget https://github.com/Sh1Yo/x8/releases/latest/download/x86_64-linux-x8.gz -O /tmp/$name.gz
-        gunzip -c /tmp/$name.gz > /usr/share/$name/$name;rm -f /tmp/$name.gz
-        chmod 755 /usr/share/$name/*
-        ln -fs /usr/share/$name/x8 /usr/bin/$name
-        chmod +x /usr/bin/$name
-        printf "$GREEN"  "[*] Successfully Installed $name"
-    fi
-
-	# install rustscan
-	if [ ! -f "/usr/bin/rustscan" ]; then
-		name="rustscan"
-		wget https://github.com/bee-san/RustScan/releases/download/2.4.1/rustscan.deb.zip -O /tmp/$name.zip
-        unzip /tmp/$name.zip -d /tmp;rm -f /tmp/$name.zip
-		chmod +x /tmp/rustscan_2.4.1-1_amd64.deb;dpkg -i /tmp/rustscan_2.4.1-1_amd64.deb
-        rm -f /tmp/rustscan_2.4.1-1_amd64.deb;rm -f /tmp/rustscan.tmp0-stripped
-		printf "$GREEN"  "[*] Successfully Installed $name"
-	fi
-
-    # List of tools to check and install if necessary
-    tools=("naabu" "httpx" "favirecon" "waybackurls" "katana" "qsreplace" "cvemap" "mapcidr" "gf" "anew" "gau")
-
-    # Loop through each tool and check if it exists
-    for tool in "${tools[@]}"; do
-        if ! command -v "$tool" &> /dev/null; then
-            echo "$tool not found. Installing..."
-            
-            # Install the tool
-            case $tool in
-                "naabu")
-                    go install github.com/projectdiscovery/naabu/v2/cmd/naabu@latest
-                    ln -fs ~/go/bin/naabu /usr/bin/naabu
-                    ;;
-                "httpx")
-                    go install github.com/projectdiscovery/httpx/cmd/httpx@latest
-                    ln -fs ~/go/bin/httpx /usr/bin/httpx
-                    ;;
-                "favirecon")
-                    go install github.com/edoardottt/favirecon/cmd/favirecon@latest
-                    ln -fs ~/go/bin/favirecon /usr/bin/favirecon
-                    ;;
-                "waybackurls")
-                    go install github.com/tomnomnom/waybackurls@latest
-                    ln -fs ~/go/bin/waybackurls /usr/bin/waybackurls
-                    ;;
-                "katana")
-                    go install github.com/projectdiscovery/katana/cmd/katana@latest
-                    ln -fs ~/go/bin/katana /usr/bin/katana
-                    ;;
-                "qsreplace")
-                    go install github.com/tomnomnom/qsreplace@latest
-                    ln -fs ~/go/bin/qsreplace /usr/bin/qsreplace
-                    ;;
-                "cvemap")
-                    go install github.com/projectdiscovery/cvemap/cmd/cvemap@latest
-                    ln -fs ~/go/bin/cvemap /usr/bin/cvemap
-                    ;;
-                "mapcidr")
-                    go install github.com/projectdiscovery/mapcidr/cmd/mapcidr@latest
-                    ln -fs ~/go/bin/mapcidr /usr/bin/mapcidr
-                    ;;
-                "gf")
-                    go install github.com/tomnomnom/gf@latest
-                    ln -fs ~/go/bin/gf /usr/bin/gf
-                    ;;
-                "anew")
-                    go install github.com/tomnomnom/anew@latest
-                    ln -fs ~/go/bin/anew /usr/bin/anew
-                    ;;
-                "gau")
-                    go install github.com/lc/gau/v2/cmd/gau@latest
-                    ln -fs ~/go/bin/gau /usr/bin/gau
-                    ;;
-            esac
-        else
-            echo "$tool is already installed."
-        fi
-    done
-
-    # install & update bash-hunter
-    if [ ! -d "/usr/share/bash-hunter" ]; then
-        NAME="bash-hunter"
-        git clone https://a9v8i:$TOKEN@github.com/unk9vvn/bash-hunter /usr/share/$name
-        chmod 755 /usr/share/$NAME/*
-        cat > /usr/bin/$NAME << EOF
-#!/bin/bash
-cd /usr/share/$NAME;bash $NAME.sh "\$@"
-EOF
-        chmod +x /usr/bin/$NAME
-        printf "$GREEN"  "[*] Successfully Installed $NAME"
-    elif [ "$(curl -s https://a9v8i:$TOKEN@raw.githubusercontent.com/unk9vvn/bash-hunter/main/version)" != $VER ]; then
-        NAME="bash-hunter"
-        git clone https://a9v8i:$TOKEN@github.com/unk9vvn/bash-hunter /usr/share/$name
-        chmod 755 /usr/share/$NAME/*
-        cat > /usr/bin/$NAME << EOF
-#!/bin/bash
-cd /usr/share/$NAME;bash $NAME.sh "\$@"
-EOF
-        chmod +x /usr/bin/$NAME
-        printf "$GREEN"  "[*] Successfully Updated $NAME"
-        bash /usr/share/$NAME/$NAME.sh
-    fi
+    echo -e "$CYAN  ╔═════════════════════════════════════════════════════════════════════════════════════════════╗"
+    echo -e "$YELLOW║                                🚀 Bash Hunter CLI Options                                   ║"
+    echo -e "$CYAN  ╠═════════════════════════════════════════════════════════════════════════════════════════════╣"
+    echo -e "$GREEN ║  🟢 $WHITE-d <domain>         $CYAN→$WHITE 🔍 Scan a single domain                   $GREEN║"
+    echo -e "$GREEN ║  📂 $WHITE-D <file>           $CYAN→$WHITE 📜 Scan multiple domains from file        $GREEN║"
+    echo -e "$GREEN ║  🧪 $WHITE-P <project_path>   $CYAN→$WHITE 🔬 Run Semgrep on a local project folder  $GREEN║"
+    echo -e "$GREEN ║  🆘 $WHITE-h                  $CYAN→$WHITE 📖 Show this help menu                    $GREEN║"
+    echo -e "$CYAN  ╚═════════════════════════════════════════════════════════════════════════════════════════════╝"
+    echo -e "$MAGENTA📌 Example usage:"
+    echo -e "$WHITE   💻 sudo bash-hunter -d example.com"
+    echo -e "$WHITE   💻 sudo bash-hunter -D domains.txt"
+    echo -e "$WHITE   💻 sudo bash-hunter -P /web-project"
 }
 
 # Create templates
@@ -217,36 +108,69 @@ process()
 
     # Scan
     nuclei "$DOMAIN"
+    semgrep "$TMP" "$PROJECT"
 }
 
 # main executions
 main()
 {
-    # Check root running
+    # Check if the script is being run as root
     if [ "$(id -u)" -ne 0 ]; then
         echo -e "${RED}[-] This script must be run as root (use sudo).${RESET}"
         exit 1
     fi
-    
-    # Ensure at least one argument is passed
-    if [[ "$#" -lt 1 ]]; then
-        echo -e "${YELLOW}[-] Usage: $0 <WEBSITE|FILE>${RESET}"
-        exit 1
+
+    # install & update bash-hunter
+    if [ ! -d "/usr/share/bash-hunter" ]; then
+        NAME="bash-hunter"
+        git clone https://a9v8i:$TOKEN@github.com/unk9vvn/bash-hunter /usr/share/$name
+        chmod 755 /usr/share/$NAME/*
+        cat > /usr/bin/$NAME << EOF
+#!/bin/bash
+cd /usr/share/$NAME;bash $NAME.sh "\$@"
+EOF
+        chmod +x /usr/bin/$NAME
+        printf "$GREEN"  "[*] Successfully Installed $NAME"
+    elif [ "$(curl -s https://a9v8i:$TOKEN@raw.githubusercontent.com/unk9vvn/bash-hunter/main/version)" != $VER ]; then
+        NAME="bash-hunter"
+        git clone https://a9v8i:$TOKEN@github.com/unk9vvn/bash-hunter /usr/share/$name
+        chmod 755 /usr/share/$NAME/*
+        cat > /usr/bin/$NAME << EOF
+#!/bin/bash
+cd /usr/share/$NAME;bash $NAME.sh "\$@"
+EOF
+        chmod +x /usr/bin/$NAME
+        printf "$GREEN"  "[*] Successfully Updated $NAME"
+        bash /usr/share/$NAME/$NAME.sh
     fi
 
-    install
-    logo
-
-    # Process either a URL or a file containing domains
-    if [[ -f "$1" ]]; then
-        echo -e "${GREEN}[+] Processing domains from file: $1${RESET}"
-        while IFS= read -r DOMAIN; do
-            [[ -z "$DOMAIN" || "$DOMAIN" =~ ^# ]] && continue
-            process "$DOMAIN"
-        done < "$1"
-    else
-        process "$1"
-    fi
+    # Parse command line arguments
+    while getopts ":d:D:P:h" opt; do
+        case "${opt}" in
+            d) DOMAIN="${OPTARG}"
+                echo -e "${GREEN}[+] Scanning single domain: $DOMAIN${RESET}"
+                process "$DOMAIN"
+            ;;
+            D) DOMAIN_FILE="${OPTARG}"
+                if [[ -f "$DOMAIN_FILE" ]]; then
+                    echo -e "${GREEN}[+] Processing domains from file: $DOMAIN_FILE${RESET}"
+                    while IFS= read -r DOMAIN; do
+                        [[ -z "$DOMAIN" || "$DOMAIN" =~ ^# ]] && continue
+                        process "$DOMAIN"
+                    done < "$DOMAIN_FILE"
+                else
+                    echo -e "${RED}[-] File not found: $DOMAIN_FILE${RESET}"
+                fi
+            ;;
+            P) PROJECT="${OPTARG}"
+                echo -e "${GREEN}[+] Running semgrep scan on: $PROJECT${RESET}"
+                process "$PROJECT"
+            ;;
+            h) logo;help; exit 0 ;;
+            *) logo;help; exit 1 ;;
+        esac
+    done
 }
-# Execute the script
+
+# Call main with all args
 main "$@"
