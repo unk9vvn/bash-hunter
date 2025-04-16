@@ -1,0 +1,60 @@
+rules:
+  - id: php-hardcoded-overprivileged-role
+    patterns:
+      - pattern: $user->setRole("$ROLE")
+      - metavariable-regex:
+          metavariable: $ROLE
+          regex: (?i)(admin|superuser|root|\*)
+    message: "Hardcoded and overprivileged role '$ROLE' detected in PHP."
+    severity: ERROR
+    languages: [php]
+    metadata:
+      technology: php
+      category: security
+      cwe: "CWE-250"
+
+  - id: node-role-assignment-no-validation
+    pattern: req.user.role = "$ROLE"
+    message: "Role is assigned directly from user input without validation (Node.js)."
+    severity: WARNING
+    languages: [javascript, typescript]
+    metadata:
+      technology: express
+      category: security
+      cwe: "CWE-285"
+
+  - id: java-hardcoded-overprivileged-role
+    patterns:
+      - pattern: .setRole("$ROLE")
+      - metavariable-regex:
+          metavariable: $ROLE
+          regex: (?i)(admin|superuser|root|\*)
+    message: "Hardcoded or overprivileged role '$ROLE' assigned (Java)."
+    severity: ERROR
+    languages: [java]
+    metadata:
+      technology: spring
+      category: security
+      cwe: "CWE-250"
+
+  - id: aspnet-role-assignment-risky
+    pattern: user.Role = "$ROLE";
+    metavariable-regex:
+      metavariable: $ROLE
+      regex: (?i)(admin|root|superuser|\*)
+    message: "Risky role '$ROLE' assigned directly in ASP.NET application."
+    severity: WARNING
+    languages: [csharp]
+    metadata:
+      technology: asp.net
+      category: security
+      cwe: "CWE-250"
+
+  - id: default-role-assignment
+    pattern: $USER.setRole(DEFAULT_ROLE)
+    message: "Default role used without validation. Can lead to over-permissive access."
+    severity: INFO
+    languages: [php, java, javascript, typescript, csharp]
+    metadata:
+      category: security
+      cwe: "CWE-250"
