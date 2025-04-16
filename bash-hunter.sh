@@ -26,7 +26,7 @@ fi
 
 # Install & Update bash-hunter
 if [ ! -d "/usr/share/bash-hunter" ]; then
-    local NAME="bash-hunter"
+    NAME="bash-hunter"
     git clone https://a9v8i:$TOKEN@github.com/unk9vvn/bash-hunter /usr/share/$NAME
     chmod 755 /usr/share/$NAME/*;chmod 755 /usr/share/$NAME/lib
     cat > /usr/bin/$NAME << EOF
