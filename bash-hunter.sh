@@ -120,7 +120,7 @@ main()
     if [ ! -d "/usr/share/bash-hunter" ]; then
         local NAME="bash-hunter"
         git clone https://a9v8i:$TOKEN@github.com/unk9vvn/bash-hunter /usr/share/$NAME
-        chmod 755 /usr/share/$NAME/*
+        chmod 755 /usr/share/$NAME/*;chmod 755 /usr/share/$NAME/lib
         cat > /usr/bin/$NAME << EOF
 #!/bin/bash
 cd /usr/share/$NAME;bash $NAME.sh "\$@"
@@ -130,7 +130,7 @@ EOF
     elif [ "$(curl -s https://a9v8i:$TOKEN@raw.githubusercontent.com/unk9vvn/bash-hunter/main/version)" != $VER ]; then
         NAME="bash-hunter"
         git clone https://a9v8i:$TOKEN@github.com/unk9vvn/bash-hunter /usr/share/$NAME
-        chmod 755 /usr/share/$NAME/*
+        chmod 755 /usr/share/$NAME/*;chmod 755 /usr/share/$NAME/lib
         cat > /usr/bin/$NAME << EOF
 #!/bin/bash
 cd /usr/share/$NAME;bash $NAME.sh "\$@"
