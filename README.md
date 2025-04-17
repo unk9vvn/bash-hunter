@@ -17,11 +17,12 @@ A tool for automating other tools and performing recon processes as well as test
 
 ### Install Bash Hunter
 ```
-curl -s https://a9v8i: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@raw.githubusercontent.com/unk9vvn/bash-hunter/main/bash-hunter.sh | sudo bash
+TOKEN=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
+curl -s https://a9v8i:$TOKEN@raw.githubusercontent.com/unk9vvn/bash-hunter/main/bash-hunter.sh | sudo bash
 ```
 ### Run Script
 ```
-sudo bash-hunter
+sudo bash-hunter t $TOKEN
 ```
 
 [![Website](https://img.shields.io/badge/Website-000000?style=flat&logo=google-chrome&logoColor=white)](https://unk9vvn.com)
