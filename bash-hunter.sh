@@ -1,4 +1,5 @@
 #!/bin/bash
+
 # Global configuration
 VERSION='1.4'
 CONFIG_DIR="${HOME}/.config/bash-hunter"
