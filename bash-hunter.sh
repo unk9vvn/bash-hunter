@@ -47,7 +47,7 @@ check_dependencies() {
     if ! command -v ifconfig &>/dev/null; then
         to_install="net-tools"
         warning_msg "ifconfig not found, net-tools package required"
-    fi5
+    fi
     
     # Check other essential programs
     for dep in $deps; do
