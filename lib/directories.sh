@@ -24,7 +24,7 @@ directories()
     USER_AGENT=${USER_AGENTS[$RANDOM % ${#USER_AGENTS[@]}]}
     
     # Get server headers to detect CDN
-    SERVER_INFO=$(curl -s -I "$DOMAIN")
+    SERVER_INFO=$(curl -s -I "$domain")
     
     # Define standard legitimate headers
     HEADERS=(
@@ -73,12 +73,12 @@ directories()
     
     # Extract cookies properly from response headers with advanced cookie handling
     # Store cookies in a temporary file for processing
-    echo "$SERVER_INFO" | grep -i "^set-cookie:" > "$TMP/raw_cookies.txt"
+    echo "$SERVER_INFO" | grep -i "^set-cookie:" > "$tmp_dir/raw_cookies.txt"
     
     # Process cookies if any were found
-    if [ -s "$TMP/raw_cookies.txt" ]; then
+    if [ -s "$tmp_dir/raw_cookies.txt" ]; then
         # Extract cookie names and values preserving the format
-        COOKIES=$(cat "$TMP/raw_cookies.txt" | sed 's/^[Ss]et-[Cc]ookie: //g' | cut -d';' -f1 | paste -sd '; ')
+        COOKIES=$(cat "$tmp_dir/raw_cookies.txt" | sed 's/^[Ss]et-[Cc]ookie: //g' | cut -d';' -f1 | paste -sd '; ')
         
         # Add cookies to headers if available
         if [ -n "$COOKIES" ]; then
@@ -94,16 +94,16 @@ directories()
     done
     
     # Run ffuf with the prepared headers
-    echo -e "${BLUE}[*] Starting directory fuzzing for: $DOMAIN${RESET}"
+    echo -e "${BLUE}[*] Starting directory fuzzing for: $domain${RESET}"
     ffuf -w /usr/share/seclists/Discovery/Web-Content/raft-large-directories.txt \
-         -u "$DOMAIN/FUZZ" \
+         -u "$domain/FUZZ" \
          -ac -c -s \
-         -o "$TMP/directories.txt" \
+         -o "$tmp_dir/directories.txt" \
          "${HEADER_PARAMS[@]}"
     
     # Display success message
-    echo -e "${GREEN}[+] Successfully fuzzed directories and saved to ${TMP}/directories.txt${RESET}"
+    echo -e "${GREEN}[+] Successfully fuzzed directories and saved to ${tmp_dir}/directories.txt${RESET}"
     
     # Clean up temporary files
-    [ -f "$TMP/raw_cookies.txt" ] && rm "$TMP/raw_cookies.txt"
+    [ -f "$tmp_dir/raw_cookies.txt" ] && rm "$tmp_dir/raw_cookies.txt"
 }
