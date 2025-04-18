@@ -37,85 +37,6 @@ info_msg() {
     echo -e "${BLUE}[*] $1${RESET}"
 }
 
-# Check for GitHub token and set it if needed
-manage_github_token() {
-    local input_token="$1"
-    
-    # If token is provided as argument, use it directly
-    if [ -n "$input_token" ]; then
-        TOKEN="$input_token"
-        mkdir -p "${CONFIG_DIR}"
-        echo "$TOKEN" > "${CONFIG_DIR}/token"
-        chmod 600 "${CONFIG_DIR}/token"
-        success_msg "GitHub token saved successfully"
-        return 0
-    fi
-    
-    # Otherwise check for existing token
-    if [ -f "${CONFIG_DIR}/token" ]; then
-        TOKEN=$(< "${CONFIG_DIR}/token")
-    elif [ -n "$BASH_HUNTER_TOKEN" ]; then
-        TOKEN="$BASH_HUNTER_TOKEN"
-    else
-        warning_msg "GitHub token not found"
-        read -rp "Please enter your GitHub token: " TOKEN
-        
-        # Save the token
-        mkdir -p "${CONFIG_DIR}"
-        echo "$TOKEN" > "${CONFIG_DIR}/token"
-        chmod 600 "${CONFIG_DIR}/token"
-    fi
-    
-    if [ -z "$TOKEN" ]; then
-        error_exit "GitHub token is required"
-    fi
-}
-
-# Check required dependencies
-check_dependencies() {
-    # List of required programs
-    local deps="wget curl git"
-    local missing_deps=""
-    
-    # Check for ifconfig (install net-tools if missing)
-    if ! command -v ifconfig &>/dev/null; then
-        missing_deps="net-tools"
-        warning_msg "ifconfig not found, net-tools package will be installed"
-    fi
-    
-    # Check other essential programs
-    for dep in $deps; do
-        if ! command -v "$dep" &>/dev/null; then
-            missing_deps+=" $dep"
-            warning_msg "$dep not found, will be installed"
-        fi
-    done
-    
-    # If any programs need to be installed
-    if [ -n "$missing_deps" ]; then
-        info_msg "Installing required packages:$missing_deps"
-        if apt-get update -qq && apt-get install -y $missing_deps; then
-            success_msg "All packages installed successfully"
-        else
-            error_exit "Failed to install packages"
-        fi
-    else
-        success_msg "All required dependencies are already installed"
-    fi
-}
-
-# Kill any running processes
-cleanup_processes() {
-    info_msg "Cleaning up any running processes..."
-    if pgrep -f 'ngrok' &>/dev/null; then
-        pkill -f 'ngrok' && success_msg "Killed ngrok process" 
-    fi
-    
-    if pgrep -f 'ruby' &>/dev/null; then
-        pkill -f 'ruby' && success_msg "Killed ruby process" 
-    fi
-}
-
 # Unk9vvN logo using printf
 display_logo() {
     reset
@@ -169,6 +90,85 @@ display_help() {
     echo "${WHITE}    💻 sudo bash-hunter -D domains.txt"
     echo "${WHITE}    💻 sudo bash-hunter -P /web-project"
     echo "${WHITE}    💻 sudo bash-hunter -u"
+}
+
+# Check required dependencies
+check_dependencies() {
+    # List of required programs
+    local deps="wget curl git"
+    local missing_deps=""
+    
+    # Check for ifconfig (install net-tools if missing)
+    if ! command -v ifconfig &>/dev/null; then
+        missing_deps="net-tools"
+        warning_msg "ifconfig not found, net-tools package will be installed"
+    fi
+    
+    # Check other essential programs
+    for dep in $deps; do
+        if ! command -v "$dep" &>/dev/null; then
+            missing_deps+=" $dep"
+            warning_msg "$dep not found, will be installed"
+        fi
+    done
+    
+    # If any programs need to be installed
+    if [ -n "$missing_deps" ]; then
+        info_msg "Installing required packages:$missing_deps"
+        if apt-get update -qq && apt-get install -y $missing_deps; then
+            success_msg "All packages installed successfully"
+        else
+            error_exit "Failed to install packages"
+        fi
+    else
+        success_msg "All required dependencies are already installed"
+    fi
+}
+
+# Check for GitHub token and set it if needed
+manage_github_token() {
+    local input_token="$1"
+    
+    # If token is provided as argument, use it directly
+    if [ -n "$input_token" ]; then
+        TOKEN="$input_token"
+        mkdir -p "${CONFIG_DIR}"
+        echo "$TOKEN" > "${CONFIG_DIR}/token"
+        chmod 600 "${CONFIG_DIR}/token"
+        success_msg "GitHub token saved successfully"
+        return 0
+    fi
+    
+    # Otherwise check for existing token
+    if [ -f "${CONFIG_DIR}/token" ]; then
+        TOKEN=$(< "${CONFIG_DIR}/token")
+    elif [ -n "$BASH_HUNTER_TOKEN" ]; then
+        TOKEN="$BASH_HUNTER_TOKEN"
+    else
+        warning_msg "GitHub token not found"
+        read -rp "Please enter your GitHub token: " TOKEN
+        
+        # Save the token
+        mkdir -p "${CONFIG_DIR}"
+        echo "$TOKEN" > "${CONFIG_DIR}/token"
+        chmod 600 "${CONFIG_DIR}/token"
+    fi
+    
+    if [ -z "$TOKEN" ]; then
+        error_exit "GitHub token is required"
+    fi
+}
+
+# Kill any running processes
+cleanup_processes() {
+    info_msg "Cleaning up any running processes..."
+    if pgrep -f 'ngrok' &>/dev/null; then
+        pkill -f 'ngrok' && success_msg "Killed ngrok process" 
+    fi
+    
+    if pgrep -f 'ruby' &>/dev/null; then
+        pkill -f 'ruby' && success_msg "Killed ruby process" 
+    fi
 }
 
 # Install or update bash-hunter
