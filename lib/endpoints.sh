@@ -45,6 +45,12 @@ extract_endpoints() {
     echo -e "${BLUE}[+] Extracting endpoints with params...${RESET}"
     grep '?' "$tmp_dir/all_raw.txt" | sort -u > $tmp_dir/endpoints_with_params.txt
 
+    rm -f $tmp_dir/katana.txt \
+          $tmp_dir/gau.txt \
+          $tmp_dir/wayback.txt \
+          $tmp_dir/hakrawler.txt \
+          $tmp_dir/all_raw.txt
+
     echo -e "${RED}[-] DONE. Output files:${RESET}"
     echo -e "${GREEN}[+] ${tmp_dir}/endpoints.txt"
     echo -e "${GREEN}[+] ${tmp_dir}/endpoints_with_params.txt"
