@@ -1,56 +1,52 @@
 #!/bin/bash
+
 RED='\033[0;31m'
 GREEN='\033[0;32m'
 BLUE='\033[0;34m'
 RESET='\033[0m'
 
-endpoints()
-{
-    # 1. katana crawl
-    katana -u $DOMAIN \
-       -fr "(static|assets|img|images|css|fonts|icons|js|cdn|vendor|bootstrap)/" \
-       -o /tmp/endpoint_one.txt \
-       -xhr-extraction \
-       -automatic-form-fill \
-       -form \
-       -silent \
-       -strategy depth-first \
-       -js-crawl \
-       -extension-filter jpg,jpeg,png,gif,bmp,tiff,tif,webp,svg,ico,css,woff,woff2,eot,ttf,otf,mp4,mp3,avi \
-       -headless --no-sandbox \
-       -known-files all \
-       -field url \
-       -sf url
+extract_endpoints() {
+    echo -e "${BLUE}[+] Crawling with katana...${RESET}"
+    katana -u "$domain" \
+        -fr "(static|assets|img|images|css|fonts|icons|js|cdn|vendor|bootstrap)/" \
+        -o "$tmp_dir/katana.txt" \
+        -xhr-extraction \
+        -automatic-form-fill \
+        -form \
+        -silent \
+        -strategy depth-first \
+        -js-crawl \
+        -extension-filter jpg,jpeg,png,gif,bmp,tiff,tif,webp,svg,ico,css,woff,woff2,eot,ttf,otf,mp4,mp3,avi \
+        -headless --no-sandbox \
+        -known-files all \
+        -field url \
+        -sf url
 
-    # Extract only paths (remove scheme and domain), clean up, and save
-    cat /tmp/urls.txt | \
+    echo -e "${BLUE}[+] Collecting with gau...${RESET}"
+    gau "$domain" --o "$tmp_dir/gau.txt"
+
+    echo -e "${BLUE}[+] Collecting with waybackurls...${RESET}"
+    waybackurls "$domain" > "$tmp_dir/wayback.txt"
+
+    echo -e "${BLUE}[+] Collecting with hakrawler...${RESET}"
+    echo "$domain" | hakrawler -subs -depth 2 -plain -insecure > "$tmp_dir/hakrawler.txt"
+
+    echo -e "${BLUE}[+] Merging all URLs...${RESET}"
+    cat "$tmp_dir"/*.txt | sort -u > "$tmp_dir/all_raw.txt"
+
+    echo -e "${BLUE}[+] Extracting endpoints without params...${RESET}"
+    grep -v '?' "$tmp_dir/all_raw.txt" | \
     sed 's/\?.*//g' | \
     sed 's/\.aspx$//' | \
     sed 's/\/[^/]*\.json$//' | \
-    grep -v '\.js$' | \
+    grep -vE '\.(js|css|jpg|png|jpeg|svg|woff|woff2|ttf|eot|mp4|mp3|ico)$' | \
     grep -v '&amp' | \
-    sed -E "s|https?://$(echo "$domain" | sed -E 's|https?://||')||" | \
-    sort -u > /tmp/endpoint_one.txt
+    sort -u > $tmp_dir/endpoints.txt
 
-    # 2. gau (wayback, commoncrawl, etc)
-    gau $DOMAIN --o $TMP/endpoint_two.txt
+    echo -e "${BLUE}[+] Extracting endpoints with params...${RESET}"
+    grep '?' "$tmp_dir/all_raw.txt" | sort -u > $tmp_dir/endpoints_with_params.txt
 
-    # 3. waybackurls
-    waybackurls $DOMAIN > $TMP/endpoint_three.txt
-
-    # 4. hakrawler
-    echo $DOMAIN | hakrawler -subs -depth 2 -plain -insecure > $TMP/endpoint_four.txt
-
-    # Combine and clean
-    cat $TMP/endpoint_one.txt $TMP/endpoint_two.txt $TMP/endpoint_three.txt $TMP/endpoint_four.txt | \
-    sed 's/\?.*//g' | \
-    sed 's/\.aspx$//' | \
-    sed 's/\/[^/]*\.json$//' | \
-    grep -v '\.js$' | \
-    grep -v '\.css$' | \
-    grep -v '\.jpg$' | \
-    grep -v '\.png$' | \
-    grep -v '&amp' | \
-    sort -u | anew $TMP/endpoints.txt
-    echo -e "${RED}[-] Success FUZZ and SAVE ${TMP}/endpoints.txt ${RESET}"
+    echo -e "${RED}[-] DONE. Output files:${RESET}"
+    echo -e "${GREEN}[+] ${tmp_dir}/endpoints.txt"
+    echo -e "${GREEN}[+] ${tmp_dir}/endpoints_with_params.txt"
 }
