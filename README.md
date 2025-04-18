@@ -22,7 +22,7 @@ curl -s https://a9v8i:$TOKEN@raw.githubusercontent.com/unk9vvn/bash-hunter/main/
 ```
 ### Run Script
 ```
-sudo bash-hunter t $TOKEN
+sudo bash-hunter -t $TOKEN
 ```
 
 [![Website](https://img.shields.io/badge/Website-000000?style=flat&logo=google-chrome&logoColor=white)](https://unk9vvn.com)
