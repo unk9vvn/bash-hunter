@@ -47,7 +47,7 @@ check_dependencies() {
     if ! command -v ifconfig &>/dev/null; then
         to_install="net-tools"
         warning_msg "ifconfig not found, net-tools package required"
-    fi
+    fi5
     
     # Check other essential programs
     for dep in $deps; do
@@ -59,11 +59,11 @@ check_dependencies() {
     
     # If any programs need to be installed
     if [ -n "$to_install" ]; then
-        echo -e "The following packages need to be installed: $to_install"
+        warning_msg "The following packages need to be installed: $to_install"
         read -p "Do you want to install them now? (y/n): " choice
         
         if [[ $choice =~ ^[Yy]$ ]]; then
-            echo "Installing required packages..."
+            info_msg "Installing required packages..."
             if apt update -qq && apt install -y $to_install; then
                 success_msg "All packages installed successfully"
             else
