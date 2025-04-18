@@ -381,10 +381,11 @@ main() {
                 display_logo
                 run_project_scan "${OPTARG}"
                 ;;
-            t)  # Set GitHub token
+            t)  
+                display_logo
                 manage_github_token "${OPTARG}"
                 ;;
-            u)  # Update bash-hunter
+            u)  
                 display_logo
                 install_update
                 ;;
