@@ -41,37 +41,32 @@ info_msg() {
 check_dependencies() {
     # List of required programs
     local deps="wget curl git"
-    local to_install=""
+    local missing_deps=""
     
     # Check for ifconfig (install net-tools if missing)
     if ! command -v ifconfig &>/dev/null; then
-        to_install="net-tools"
-        warning_msg "ifconfig not found, net-tools package required"
+        missing_deps="net-tools"
+        warning_msg "ifconfig not found, net-tools package will be installed"
     fi
     
     # Check other essential programs
     for dep in $deps; do
         if ! command -v "$dep" &>/dev/null; then
-            to_install="$to_install $dep"
-            warning_msg "$dep not found"
+            missing_deps="$missing_deps $dep"
+            warning_msg "$dep not found, will be installed"
         fi
     done
     
     # If any programs need to be installed
-    if [ -n "$to_install" ]; then
-        warning_msg "The following packages need to be installed: $to_install"
-        read -p "Do you want to install them now? (y/n): " choice
-        
-        if [[ $choice =~ ^[Yy]$ ]]; then
-            info_msg "Installing required packages..."
-            if apt update -qq && apt install -y $to_install; then
-                success_msg "All packages installed successfully"
-            else
-                error_exit "Failed to install packages"
-            fi
+    if [ -n "$missing_deps" ]; then
+        info_msg "Installing required packages: $missing_deps"
+        if apt update -qq && apt install -y $missing_deps; then
+            success_msg "All packages installed successfully"
         else
-            error_exit "Please install the required packages manually"
+            error_exit "Failed to install packages"
         fi
+    else
+        success_msg "All required dependencies are already installed"
     fi
 }
 
