@@ -108,67 +108,6 @@ cleanup_processes() {
     fi
 }
 
-# Create directories for logs and temporary files
-setup_directories() {
-    mkdir -p "$LOG_DIR"
-    chmod 750 "$LOG_DIR"
-    
-    # Ensure temporary directories are properly cleaned
-    if [ -d "/tmp/$1" ]; then
-        rm -rf "/tmp/$1"
-    fi
-    mkdir -p "/tmp/$1"
-}
-
-# Install or update bash-hunter
-install_update() {
-    local install_path="/usr/share/bash-hunter"
-    local bin_path="/usr/bin/bash-hunter"
-    
-    # Check if we need to install or update
-    local action="Installed"
-    if [ -d "$install_path" ]; then
-        action="Updated"
-        remote_version=$(curl -s -H "Authorization: token $TOKEN" "https://raw.githubusercontent.com/$GITHUB_REPO/main/version" || echo "0")
-        
-        if [ "$remote_version" = "$VERSION" ]; then
-            info_msg "You already have the latest version ($VERSION)"
-            return 0
-        fi
-        
-        info_msg "Updating from version $VERSION to $remote_version..."
-        rm -rf "$install_path"
-    fi
-    
-    # Clone repository
-    if ! git clone "https://$TOKEN@github.com/$GITHUB_REPO" "$install_path"; then
-        error_exit "Failed to clone repository"
-    fi
-    
-    # Set permissions
-    chmod -R 755 "$install_path"
-    
-    # Create executable in path
-    cat > "$bin_path" << EOF
-#!/bin/bash
-cd "$install_path" && bash bash-hunter.sh "\$@"
-EOF
-    chmod +x "$bin_path"
-    
-    success_msg "Successfully $action: bash-hunter"
-    success_msg "Run with: sudo bash-hunter"
-    exit 0
-}
-
-# Create templates
-create_temp_files() {
-    local domain="$1"
-    local tmp_dir="/tmp/$domain"
-    
-    echo "8.8.8.8" > "$tmp_dir/resolvers.txt"
-    echo "Creating temporary files in $tmp_dir"
-}
-
 # Unk9vvN logo
 display_logo() {
     reset
@@ -222,6 +161,67 @@ display_help() {
     echo -e "$WHITE    💻 sudo bash-hunter -D domains.txt"
     echo -e "$WHITE    💻 sudo bash-hunter -P /web-project"
     echo -e "$WHITE    💻 sudo bash-hunter -u"
+}
+
+# Install or update bash-hunter
+install_update() {
+    local install_path="/usr/share/bash-hunter"
+    local bin_path="/usr/bin/bash-hunter"
+    
+    # Check if we need to install or update
+    local action="Installed"
+    if [ -d "$install_path" ]; then
+        action="Updated"
+        remote_version=$(curl -s -H "Authorization: token $TOKEN" "https://raw.githubusercontent.com/$GITHUB_REPO/main/version" || echo "0")
+        
+        if [ "$remote_version" = "$VERSION" ]; then
+            info_msg "You already have the latest version ($VERSION)"
+            return 0
+        fi
+        
+        info_msg "Updating from version $VERSION to $remote_version..."
+        rm -rf "$install_path"
+    fi
+    
+    # Clone repository
+    if ! git clone "https://$TOKEN@github.com/$GITHUB_REPO" "$install_path"; then
+        error_exit "Failed to clone repository"
+    fi
+    
+    # Set permissions
+    chmod -R 755 "$install_path"
+    
+    # Create executable in path
+    cat > "$bin_path" << EOF
+#!/bin/bash
+cd "$install_path" && bash bash-hunter.sh "\$@"
+EOF
+    chmod +x "$bin_path"
+    
+    success_msg "Successfully $action: bash-hunter"
+    success_msg "Run with: sudo bash-hunter"
+    exit 0
+}
+
+# Create directories for logs and temporary files
+setup_directories() {
+    mkdir -p "$LOG_DIR"
+    chmod 750 "$LOG_DIR"
+    
+    # Ensure temporary directories are properly cleaned
+    if [ -d "/tmp/$1" ]; then
+        rm -rf "/tmp/$1"
+    fi
+    mkdir -p "/tmp/$1"
+}
+
+# Create templates
+create_temp_files() {
+    local domain="$1"
+    local tmp_dir="/tmp/$domain"
+    
+    echo "8.8.8.8" > "$tmp_dir/resolvers.txt"
+    echo "Creating temporary files in $tmp_dir"
 }
 
 # Validate domain name format
